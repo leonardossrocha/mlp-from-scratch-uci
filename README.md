@@ -13,7 +13,7 @@ Este repositório consiste no desenvolvimento e documentação do **Trabalho Pr�
 O objetivo principal da atividade é consolidar o domínio prático e formal sobre as arquiteturas fundamentais de Redes Neurais Artificiais (RNAs), especificamente o modelo de **Perceptron Multicamadas (Multilayer Perceptron - MLP)** treinado por meio do algoritmo de **Retropropagação do Erro (*Backpropagation*)**. 
 
 A tarefa requer:
-1. **Seleção de Base de Dados:** Escolha de um conjunto de dados do repositório [*UCI Machine Learning Repository*](`https://archive.ics.uci.edu/datasets`).
+1. **Seleção de Base de Dados:** Escolha de um conjunto de dados do repositório *[UCI Machine Learning Repository](https://archive.ics.uci.edu/datasets)*.
 2. **Implementação em Baixo Nível (NumPy Puro):** Evoluir o script base fornecido em aula (`rede_multicamada.py`) para reconhecer os padrões do dataset escolhido, operando diretamente sobre matrizes e derivadas analíticas. É expressamente vedado o uso de frameworks de alto nível de Deep Learning (como Keras, PyTorch, TensorFlow ou Scikit-Learn MLPClassifier).
 3. **Flexibilidade e Otimização Arquitetural:** Ajustar livremente dimensões de entrada, camadas ocultas, número de neurônios, taxa de aprendizado, termo de momento e funções de ativação (Sigmoide, ReLU, Tanh).
 4. **Mecanismos de Generalização e Regularização:** Implementação de rotinas manuais de *Early Stopping* e técnicas de sintonia fina (*hyperparameter tuning*).
@@ -115,7 +115,7 @@ This repository contains the codebase, experiments, and technical documentation 
 The core purpose of this evaluation is to demonstrate mastery over the formal and practical mechanics of connectionist models, focusing on the **Multilayer Perceptron (MLP)** trained using the classic **Backpropagation** algorithm.
 
 Key project guidelines include:
-1. **Benchmark Selection:** Selection of a real-world tabular dataset from the [*UCI Machine Learning Repository*](`https://archive.ics.uci.edu/datasets`).
+1. **Benchmark Selection:** Selection of a real-world tabular dataset from the *[UCI Machine Learning Repository](https://archive.ics.uci.edu/datasets)*.
 2. **Low-Level Native Implementation (Pure NumPy):** Extending the baseline script provided in class (`rede_multicamada.py`) to classify the chosen dataset using native matrix algebra and analytical differentiation. High-level deep learning frameworks (e.g., PyTorch, TensorFlow, Keras, Scikit-Learn MLPClassifier) are strictly prohibited.
 3. **Topology and Hyperparameter Tuning:** Custom design of input dimensions, hidden dense layers, neuron counts, learning rates, momentum factors, and activation functions (Sigmoid, ReLU, Tanh).
 4. **Regularization & Training Stability:** Development of a native *Early Stopping* mechanism to prevent overfitting on validation loss.
