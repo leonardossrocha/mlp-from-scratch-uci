@@ -1,6 +1,6 @@
-# Implementação de Perceptron Multicamadas (MLP) com Backpropagation / Multilayer Perceptron (MLP) Implementation with Backpropagation
+# Implementação de Perceptron Multicamadas (MLP) com Backpropagation
 
-[Português](#versão-em-português) | [English](#english-version)
+[Português](#implementação-de-perceptron-multicamadas-mlp-com-backpropagation) | [English](#multilayer-perceptron-mlp-implementation-with-backpropagation)
 
 ---
 
@@ -103,6 +103,8 @@ python3 main.py
 
 ---
 ---
+
+# Multilayer Perceptron (MLP) Implementation with Backpropagation
 
 ## English Version
 
