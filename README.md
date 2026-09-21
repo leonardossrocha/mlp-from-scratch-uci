@@ -39,7 +39,7 @@ Para a validação e treinamento do modelo, foi selecionado o dataset **[Breast 
 #### 2.2 Pré-processamento Aplicado
 - **Remoção de Identificadores:** Eliminação da coluna de identificação única do paciente (`ID`).
 - **Codificação de Classes:** Mapeamento de `M` $\rightarrow 1$ e `B` $\rightarrow 0$.
-- **Normalização Min-Max:** Reescalonamento linear de todos os 30 preditores para o intervalo $[0, 1]$ a fim de evitar a saturação precoce das funções de ativação e instabilidade nos gradientes:
+- **Normalização Min-Max:** Reescalonamento linear de todos os 30 preditores para o intervalo $[0, 1]$ a fim de evitar a saturação precoce das funções de ativação e instabilidade nos gradientes:  
   $$x_{\text{norm}} = \frac{x - x_{\min}}{x_{\max} - x_{\min}}$$
 - **Particionamento:** Divisão em subconjuntos de **Treino (70%)**, **Validação (15%)** e **Teste (15%)**, mantendo semente pseudoaleatória controlada para assegurar reprodutibilidade.
 
@@ -54,7 +54,7 @@ $$y_k = \varphi(v_k)$$
 Onde $x_0 = +1$ representa a entrada do *bias* ($w_{k0} = b_k$).
 
 #### 3.2 Algoritmo Backpropagation
-O treinamento supervisionado minimiza a função de custo baseada no erro quadrático instantâneo:
+O treinamento supervisionado minimiza a função de custo baseada no erro quadrático instantâneo:  
 $$\xi(n) = \frac{1}{2} \sum_{k \in C_{\text{saída}}} e_k^2(n) = \frac{1}{2} \sum_{k \in C_{\text{saída}}} (d_k(n) - y_k(n))^2$$
 
 Pela regra da cadeia, o gradiente local ($\delta$) é calculado:
@@ -68,19 +68,23 @@ $$\Delta w_{ji}(n) = \alpha \Delta w_{ji}(n-1) + \eta \delta_j(n) y_i(n)$$
 $$w_{ji}(n+1) = w_{ji}(n) + \Delta w_{ji}(n)$$
 
 #### 3.3 Funções de Ativação e Derivadas Analíticas
-- **Sigmoide:**
+- **Sigmoide:**  
   $$\sigma(z) = \frac{1}{1 + e^{-z}}, \quad \sigma'(z) = \sigma(z)(1 - \sigma(z))$$
-- **ReLU (Rectified Linear Unit):**
+- **ReLU (Rectified Linear Unit):**  
   $$f(z) = \max(0, z), \quad f'(z) = \begin{cases} 1, & \text{se } z > 0 \\ 0, & \text{se } z \le 0 \end{cases}$$
-- **Tangente Hiperbólica ($\tanh$):**
+- **Tangente Hiperbólica ($\tanh$):**  
   $$\tanh(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}}, \quad \tanh'(z) = 1 - \tanh^2(z)$$
 
 #### 3.4 Métricas de Avaliação
 O modelo é avaliado no conjunto de teste através das seguintes métricas analíticas:
-- **Erro Médio Absoluto (MAE):** $\text{MAE} = \frac{1}{N} \sum_{i=1}^N \vert{}d_i - y_i\vert{}$
-- **Erro Quadrático Médio (MSE):** $\text{MSE} = \frac{1}{N} \sum_{i=1}^N (d_i - y_i)^2$
-- **Raiz do Erro Quadrático Médio (RMSE):** $\text{RMSE} = \sqrt{\text{MSE}}$
-- **Acurácia:** $\text{Acurácia} = \frac{\text{Previsões Corretas}}{N} \times 100\%$
+- **Erro Médio Absoluto (MAE):**   
+$\text{MAE} = \frac{1}{N} \sum_{i=1}^N \vert{}d_i - y_i\vert{}$
+- **Erro Quadrático Médio (MSE):**  
+$\text{MSE} = \frac{1}{N} \sum_{i=1}^N (d_i - y_i)^2$
+- **Raiz do Erro Quadrático Médio (RMSE):**  
+$\text{RMSE} = \sqrt{\text{MSE}}$
+- **Acurácia:**  
+$\text{Acurácia} = \frac{\text{Previsões Corretas}}{N} \times 100\%$
 
 ---
 
@@ -190,31 +194,31 @@ Model evaluation and training are carried out on the **[Breast Cancer Wisconsin 
 ### 3. Theoretical Background and Mathematical Formulation
 
 #### 3.1 Artificial Neuron Model
-Each neuron $k$ computes an affine transformation followed by an element-wise non-linear activation function $\varphi(\cdot)$:
-$$v_k = \sum_{j=0}^{m} w_{kj} x_j = \mathbf{w}_k^T \mathbf{x}$$
-$$y_k = \varphi(v_k)$$
+Each neuron $k$ computes an affine transformation followed by an element-wise non-linear activation function $\varphi(\cdot)$:  
+$$v_k = \sum_{j=0}^{m} w_{kj} x_j = \mathbf{w}_k^T \mathbf{x}$$  
+$$y_k = \varphi(v_k)$$  
 Where $x_0 = +1$ denotes the fixed bias input ($w_{k0} = b_k$).
 
 #### 3.2 Backpropagation Algorithm
-Supervised training minimizes the instantaneous sum of squared errors cost function:
+Supervised training minimizes the instantaneous sum of squared errors cost function:  
 $$\xi(n) = \frac{1}{2} \sum_{k \in C_{\text{output}}} e_k^2(n) = \frac{1}{2} \sum_{k \in C_{\text{output}}} (d_k(n) - y_k(n))^2$$
 
-Applying the chain rule yields the local gradient ($\delta$):
-- **For Output Layer Neurons ($k$):**
+Applying the chain rule yields the local gradient ($\delta$):  
+- **For Output Layer Neurons ($k$):**  
   $$\delta_k(n) = e_k(n) \cdot \varphi'(v_k(n)) = (d_k(n) - y_k(n)) \cdot \varphi'(v_k(n))$$
-- **For Hidden Layer Neurons ($j$):**
+- **For Hidden Layer Neurons ($j$):**  
   $$\delta_j(n) = \varphi'(v_j(n)) \sum_{k} \delta_k(n) w_{kj}(n)$$
 
-Weight updates incorporating momentum ($\alpha$) and learning rate ($\eta$) are defined as:
-$$\Delta w_{ji}(n) = \alpha \Delta w_{ji}(n-1) + \eta \delta_j(n) y_i(n)$$
+Weight updates incorporating momentum ($\alpha$) and learning rate ($\eta$) are defined as:  
+$$\Delta w_{ji}(n) = \alpha \Delta w_{ji}(n-1) + \eta \delta_j(n) y_i(n)$$  
 $$w_{ji}(n+1) = w_{ji}(n) + \Delta w_{ji}(n)$$
 
 #### 3.3 Activation Functions and Derivatives
-- **Sigmoid:**
+- **Sigmoid:**  
   $$\sigma(z) = \frac{1}{1 + e^{-z}}, \quad \sigma'(z) = \sigma(z)(1 - \sigma(z))$$
-- **ReLU (Rectified Linear Unit):**
+- **ReLU (Rectified Linear Unit):**  
   $$f(z) = \max(0, z), \quad f'(z) = \begin{cases} 1, & \text{if } z > 0 \\ 0, & \text{if } z \le 0 \end{cases}$$
-- **Hyperbolic Tangent ($\tanh$):**
+- **Hyperbolic Tangent ($\tanh$):**  
   $$\tanh(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}}, \quad \tanh'(z) = 1 - \tanh^2(z)$$
 
 #### 3.4 Evaluation Metrics
