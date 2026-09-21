@@ -217,7 +217,7 @@ $$w_{ji}(n+1) = w_{ji}(n) + \Delta w_{ji}(n)$$
 - **Sigmoid:**  
   $$\sigma(z) = \frac{1}{1 + e^{-z}}, \quad \sigma'(z) = \sigma(z)(1 - \sigma(z))$$
 - **ReLU (Rectified Linear Unit):**  
-  $$f(z) = \max(0, z), \quad f'(z) = \begin{cases} 1, & \text{if } z > 0 \\ 0, & \text{if } z \le 0 \end{cases}$$
+  $$f(z) = \max(0, z), \quad f'(z) = \begin{cases} 1, & \text{if } z > 0 \\ 0, & \text{if } z \le 0 \end{cases}$$  
 - **Hyperbolic Tangent ($\tanh$):**  
   $$\tanh(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}}, \quad \tanh'(z) = 1 - \tanh^2(z)$$
 
