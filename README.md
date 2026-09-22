@@ -98,7 +98,7 @@ sudo apt update && sudo apt install -y python3 python3-pip python3-venv git
 
 #### 4.2 Clonando o Repositório e Criando o Ambiente Virtual
 ```bash
-git clone [https://github.com/SEU_USUARIO/mlp-from-scratch-uci.git](https://github.com/SEU_USUARIO/mlp-from-scratch-uci.git)
+git clone https://github.com/leonardossrocha/mlp-from-scratch-uci.git
 cd mlp-from-scratch-uci
 
 python3 -m venv venv
@@ -240,7 +240,7 @@ sudo apt update && sudo apt install -y python3 python3-pip python3-venv git
 
 #### 4.2 Repository Setup & Virtual Environment
 ```bash
-git clone [https://github.com/YOUR_USERNAME/mlp-from-scratch-uci.git](https://github.com/YOUR_USERNAME/mlp-from-scratch-uci.git)
+git clone https://github.com/leonardossrocha/mlp-from-scratch-uci.git
 cd mlp-from-scratch-uci
 
 python3 -m venv venv
