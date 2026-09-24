@@ -7,7 +7,7 @@
 ## Versão em Português
 
 ### 1. Descrição do Trabalho Acadêmico
-Este repositório consiste no desenvolvimento, experimentação e documentação do **Trabalho Prático Avaliativo (1ª Avaliação Parcial)** da disciplina **Tópicos Avançados em Inteligência Computacional (Código: DIN4101)**, ministrada pelos professores **Dr. Rodrigo Clemente Thom de Souza** e **Dr. Rodrigo Calvo** no âmbito do **Programa de Pós-Graduação em Ciência da Computação (PCC)** do Centro de Tecnologia / Departamento de Informática da **Universidade Estadual de Maringá (UEM)**.
+Este repositório consiste no desenvolvimento, experimentação e documentação do **Trabalho Prático Avaliativo (1ª Avaliação Parcial)** da disciplina **Tópicos Avançados em Inteligência Computacional (Código: DIN4101)**, ministrada pelos professores **Dr. Rodrigo Clemente Thom de Souza** e **Dr. Rodrigo Calvo** no âmbito do **Programa de Pós-Graduação em Ciência da Computação (PCC)** do Centro de Tecnologia / Departamento de Informática da **Universidade Estadual de Maringá (UEM)**[cite: 2].
 
 #### 1.1 Objetivo e Escopo da Avaliação
 O objetivo principal da atividade é implementar uma Rede Neural Perceptron Multicamadas (MLP) adaptando a base de código apresentada em sala de aula (`rede_multicamada.py`), explorando configurações arquiteturais e hiperparâmetros de treinamento a fim de **obter o menor erro de treinamento possível** em um conjunto de dados real.
@@ -31,6 +31,7 @@ Para a experimentação prática, foi selecionado o dataset **[Breast Cancer Wis
 
 #### 2.1 Características do Dataset
 - **Domínio:** Diagnóstico oncológico computacional.
+- **Identificador UCI:** `17`
 - **Número de Instâncias:** 569 amostras.
 - **Número de Atributos Preditores:** 30 atributos contínuos derivados de características de núcleos celulares presentes em imagens de punção aspirativa por agulha fina (FNA).
 - **Dados Faltantes (*Missing Values*):** Inexistentes.
@@ -39,7 +40,31 @@ Para a experimentação prática, foi selecionado o dataset **[Breast Cancer Wis
   - **Benigno (B):** Mapeado para $0$.
 - **Distribuição de Classes:** 357 benignos (62,7%) e 212 malignos (37,3%).
 
-#### 2.2 Pré-processamento
+#### 2.2 Acesso e Importação dos Dados via API UCI
+Para garantir reprodutibilidade sem necessidade de download manual de arquivos, o dataset pode ser consumido diretamente via biblioteca oficial do UCI Repository ([ucimlrepo no GitHub](https://github.com/uci-ml-repo/ucimlrepo)):
+
+```bash
+pip install ucimlrepo
+```
+
+```python
+from ucimlrepo import fetch_ucirepo, list_available_datasets
+
+# Importar o dataset Breast Cancer Wisconsin (Diagnostic) usando o ID 17
+breast_cancer = fetch_ucirepo(id=17) 
+  
+# Acesso às variáveis explicativas e ao alvo em formato tabular (Pandas DataFrame)
+X = breast_cancer.data.features 
+y = breast_cancer.data.targets 
+
+# Metadados do conjunto de dados e dicionário de variáveis
+print(breast_cancer.metadata) 
+print(breast_cancer.variables) 
+```
+
+> **Fallback Local:** Em ambientes sem conexão de rede, os scripts executam automaticamente a leitura local do arquivo presente em `data/wdbc.data`.
+
+#### 2.3 Pré-processamento
 - **Remoção de Identificadores:** Exclusão da coluna de identificação única (`ID`).
 - **Codificação de Classes:** Mapeamento formal de `M` $\rightarrow 1$ e `B` $\rightarrow 0$.
 - **Normalização Min-Max:** Ajuste de escala de todos os 30 atributos para o intervalo $[0, 1]$ para assegurar estabilidade numérica no cálculo do gradiente:
@@ -112,7 +137,7 @@ pip install -r requirements.txt
 
 ### 5. Resultados Experimentais e Comparativo Arquitetural
 
-Foram configurados e avaliados 4 cenários experimentais no subconjunto de treinamento e teste. A tabela a seguir consolida as métricas analíticas obtidas:
+Foram configurados e avaliados 4 cenários experimentais no subconjunto de treinamento e teste:
 
 | Configuração | Épocas | Treino MSE | Treino MAE | Treino RMSE | Treino Acc (%) | Teste MSE | Teste Acc (%) |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -174,7 +199,7 @@ python3 main.py
 ## English Version
 
 ### 1. Academic Assignment Description
-This repository contains the source code, experimental benchmark, and technical documentation developed for the **Partial Practical Assessment (1st Evaluation Term)** of the course **Advanced Topics in Computational Intelligence (Code: DIN4101)**, instructed by Prof. Dr. Rodrigo Clemente Thom de Souza and Prof. Dr. Rodrigo Calvo under the **Graduate Program in Computer Science (PCC)**, Department of Informatics, **State University of Maringá (UEM)**.
+This repository contains the source code, experimental benchmark, and technical documentation developed for the **Partial Practical Assessment (1st Evaluation Term)** of the course **Advanced Topics in Computational Intelligence (Code: DIN4101)**, instructed by Prof. Dr. Rodrigo Clemente Thom de Souza and Prof. Dr. Rodrigo Calvo under the **Graduate Program in Computer Science (PCC)**, Department of Informatics, **State University of Maringá (UEM)**[cite: 2].
 
 #### 1.1 Scope and Technical Requirements
 The primary goal is to implement and configure an MLP Neural Network based on the baseline script presented in class (`rede_multicamada.py`), evaluating diverse architectural topologies and training hyperparameters to **achieve the lowest possible training error** on a real-world tabular dataset.
@@ -198,6 +223,7 @@ Experiments are conducted on the **[Breast Cancer Wisconsin (Diagnostic)](https:
 
 #### 2.1 Dataset Summary
 - **Domain:** Computational Oncology / Medical Diagnosis.
+- **UCI ID:** `17`
 - **Instances:** 569 samples.
 - **Predictor Attributes:** 30 continuous numeric attributes extracted from digitized cell nucleus images (fine needle aspirate - FNA).
 - **Missing Values:** None.
@@ -206,7 +232,31 @@ Experiments are conducted on the **[Breast Cancer Wisconsin (Diagnostic)](https:
   - **Benign (B):** Mapped to $0$.
 - **Class Distribution:** 357 benign (62.7%) and 212 malignant (37.3%).
 
-#### 2.2 Preprocessing Pipeline
+#### 2.2 Access and Data Retrieval via UCI API
+To streamline automated data retrieval without manual downloading, the dataset can be loaded via the official UCI repository library ([ucimlrepo on GitHub](https://github.com/uci-ml-repo/ucimlrepo)):
+
+```bash
+pip install ucimlrepo
+```
+
+```python
+from ucimlrepo import fetch_ucirepo, list_available_datasets
+
+# Fetch dataset using official UCI ID 17
+breast_cancer = fetch_ucirepo(id=17) 
+  
+# Data features and targets loaded as Pandas DataFrames
+X = breast_cancer.data.features 
+y = breast_cancer.data.targets 
+
+# Variable inspection and metadata
+print(breast_cancer.metadata) 
+print(breast_cancer.variables) 
+```
+
+> **Local Fallback:** For offline environments, local storage support is provided via `data/wdbc.data`.
+
+#### 2.3 Preprocessing Pipeline
 - **Identifier Pruning:** Removal of patient ID numbers.
 - **Label Encoding:** Direct mapping of `M` $\rightarrow 1$ and `B` $\rightarrow 0$.
 - **Min-Max Scaling:** Linear normalization into $[0, 1]$ across all 30 features:
@@ -317,7 +367,7 @@ mlp-from-scratch-uci/
 ├── main.py                # Command-line benchmark script
 ├── requirements.txt       # Project dependencies
 ├── LICENSE                # MIT License
-└── README.md              # Bilingual project documentation
+└── README.md              # Bilingual technical documentation
 ```
 
 ---
