@@ -47,9 +47,12 @@ wheels/
 *.swp
 *.swo
 *~
+Glossario*.docx
+Cronograma*.docx
 
 # ==========================================
 # Arquivos de Sistema Operacional (Linux / macOS / Windows)
 # ==========================================
 .DS_Store
 Thumbs.db
+*old

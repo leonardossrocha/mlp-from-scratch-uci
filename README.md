@@ -44,7 +44,7 @@ Para a experimentação prática, foi selecionado o dataset **[Breast Cancer Wis
 - **Codificação de Classes:** Mapeamento formal de `M` $\rightarrow 1$ e `B` $\rightarrow 0$.
 - **Normalização Min-Max:** Ajuste de escala de todos os 30 atributos para o intervalo $[0, 1]$ para assegurar estabilidade numérica no cálculo do gradiente:
   $$x_{\text{norm}} = \frac{x - x_{\min}}{x_{\max} - x_{\min}}$$
-- **Particionamento:** Estruturação dos dados em subconjuntos de Treino, Validação (para controle de estabilização) e Teste.
+- **Particionamento:** Estruturação dos dados em subconjuntos de Treino (70% - 398 amostras), Validação (15% - 85 amostras) e Teste (15% - 86 amostras).
 
 ---
 
@@ -95,7 +95,7 @@ sudo apt update && sudo apt install -y python3 python3-pip python3-venv git
 
 #### 4.2 Clonando o Repositório e Criando o Ambiente Virtual
 ```bash
-git clone [https://github.com/SEU_USUARIO/mlp-from-scratch-uci.git](https://github.com/SEU_USUARIO/mlp-from-scratch-uci.git)
+git clone [https://github.com/leonardossrocha/mlp-from-scratch-uci.git](https://github.com/leonardossrocha/mlp-from-scratch-uci.git)
 cd mlp-from-scratch-uci
 
 python3 -m venv venv
@@ -110,13 +110,32 @@ pip install -r requirements.txt
 
 ---
 
-### 5. Estrutura do Repositório
+### 5. Resultados Experimentais e Comparativo Arquitetural
+
+Foram configurados e testados 4 modelos com diferentes topologias, funções de ativação e taxas de aprendizado, com o intuito de analisar a convergência e minimizar o erro de treinamento:
+
+| Experimento | Arquitetura | Ativações | $\eta$ | $\alpha$ | Objetivo da Hipótese |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| **Exp 1: Baseline** | `[30, 8, 1]` | Sigmoide / Sigmoide | 0.10 | 0.50 | Topologia rasa padrão com ativação logística. |
+| **Exp 2: ReLU Camada Larga** | `[30, 16, 1]` | ReLU / Sigmoide | 0.05 | 0.70 | Camada oculta ampliada com ReLU para mitigar gradiente evanescente. |
+| **Exp 3: MLP Profunda** | `[30, 16, 8, 1]` | ReLU / ReLU / Sigmoide | 0.01 | 0.80 | Duas camadas ocultas hierárquicas com aprendizado conservador. |
+| **Exp 4: Alta Capacidade** | `[30, 32, 16, 1]` | Tanh / Tanh / Sigmoide | 0.05 | 0.90 | Rede densa com ativações simétricas centradas em zero. |
+
+#### 5.1 Evolução e Convergência das Curvas de Erro
+As curvas de convergência para o Erro Quadrático Médio (MSE) e Erro Médio Absoluto (MAE) foram geradas e salvas durante o treinamento:
+
+![Curvas de Convergência do Erro](notebooks/curvas_convergencia_erro.png)
+
+---
+
+### 6. Estrutura do Repositório
 ```text
 mlp-from-scratch-uci/
 ├── data/                  # Base de dados (Breast Cancer Wisconsin Diagnostic)
 │   └── wdbc.data
 ├── notebooks/             # Relatório e experimentos interativos (JupyterLab)
-│   └── 01_mlp_breast_cancer.ipynb
+│   ├── 01_mlp_breast_cancer.ipynb
+│   └── curvas_convergencia_erro.png
 ├── src/                   # Módulos Python em baixo nível (NumPy)
 │   ├── __init__.py
 │   ├── activation.py      # Funções de ativação e respectivas derivadas analíticas
@@ -131,7 +150,7 @@ mlp-from-scratch-uci/
 
 ---
 
-### 6. Execução e Relatório
+### 7. Execução e Relatório
 Para rodar a suíte experimental interativa com visualização gráfica da convergência:
 ```bash
 jupyter lab
@@ -187,7 +206,7 @@ Experiments are conducted on the **[Breast Cancer Wisconsin (Diagnostic)](https:
 - **Label Encoding:** Direct mapping of `M` $\rightarrow 1$ and `B` $\rightarrow 0$.
 - **Min-Max Scaling:** Linear normalization into $[0, 1]$ across all 30 features:
   $$x_{\text{norm}} = \frac{x - x_{\min}}{x_{\max} - x_{\min}}$$
-- **Partitioning:** Splitting into Train, Validation, and Test subsets under fixed random seeds.
+- **Partitioning:** Splitting into Train (70% - 398 samples), Validation (15% - 85 samples), and Test (15% - 86 samples) subsets under fixed random seeds.
 
 ---
 
@@ -238,7 +257,7 @@ sudo apt update && sudo apt install -y python3 python3-pip python3-venv git
 
 #### 4.2 Clone & Environment Creation
 ```bash
-git clone [https://github.com/YOUR_USERNAME/mlp-from-scratch-uci.git](https://github.com/YOUR_USERNAME/mlp-from-scratch-uci.git)
+git clone [https://github.com/leonardossrocha/mlp-from-scratch-uci.git](https://github.com/leonardossrocha/mlp-from-scratch-uci.git)
 cd mlp-from-scratch-uci
 
 python3 -m venv venv
@@ -253,13 +272,32 @@ pip install -r requirements.txt
 
 ---
 
-### 5. Repository Structure
+### 5. Experimental Results and Architectural Comparison
+
+Four distinct topologies with varying activation functions and learning rates were evaluated to minimize training loss:
+
+| Experiment | Architecture | Activations | $\eta$ | $\alpha$ | Hypothesis Objective |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| **Exp 1: Baseline** | `[30, 8, 1]` | Sigmoid / Sigmoid | 0.10 | 0.50 | Standard shallow network with logistic activations. |
+| **Exp 2: Wide ReLU** | `[30, 16, 1]` | ReLU / Sigmoid | 0.05 | 0.70 | Expanded hidden layer with ReLU to mitigate vanishing gradients. |
+| **Exp 3: Deep MLP** | `[30, 16, 8, 1]` | ReLU / ReLU / Sigmoid | 0.01 | 0.80 | Deep two-layer hierarchy trained with conservative steps. |
+| **Exp 4: High Capacity** | `[30, 32, 16, 1]` | Tanh / Tanh / Sigmoid | 0.05 | 0.90 | Dense topology with zero-centered activations. |
+
+#### 5.1 Error Convergence Curves
+Convergence histories for both Mean Squared Error (MSE) and Mean Absolute Error (MAE) were recorded across epochs:
+
+![Error Convergence Curves](notebooks/curvas_convergencia_erro.png)
+
+---
+
+### 6. Repository Structure
 ```text
 mlp-from-scratch-uci/
 ├── data/                  # UCI Dataset (Breast Cancer Wisconsin Diagnostic)
 │   └── wdbc.data
 ├── notebooks/             # Interactive report and convergence analysis
-│   └── 01_mlp_breast_cancer.ipynb
+│   ├── 01_mlp_breast_cancer.ipynb
+│   └── curvas_convergencia_erro.png
 ├── src/                   # Low-level NumPy neural network engine
 │   ├── __init__.py
 │   ├── activation.py      # Activation functions and analytical derivatives
@@ -274,7 +312,7 @@ mlp-from-scratch-uci/
 
 ---
 
-### 6. Running Experiments
+### 7. Running Experiments
 To launch the interactive report and inspect error curves:
 ```bash
 jupyter lab
