@@ -112,17 +112,22 @@ pip install -r requirements.txt
 
 ### 5. Resultados Experimentais e Comparativo Arquitetural
 
-Foram configurados e testados 4 modelos com diferentes topologias, funções de ativação e taxas de aprendizado, com o intuito de analisar a convergência e minimizar o erro de treinamento:
+Foram configurados e avaliados 4 cenários experimentais no subconjunto de treinamento e teste. A tabela a seguir consolida as métricas analíticas obtidas:
 
-| Experimento | Arquitetura | Ativações | $\eta$ | $\alpha$ | Objetivo da Hipótese |
-| :--- | :---: | :---: | :---: | :---: | :--- |
-| **Exp 1: Baseline** | `[30, 8, 1]` | Sigmoide / Sigmoide | 0.10 | 0.50 | Topologia rasa padrão com ativação logística. |
-| **Exp 2: ReLU Camada Larga** | `[30, 16, 1]` | ReLU / Sigmoide | 0.05 | 0.70 | Camada oculta ampliada com ReLU para mitigar gradiente evanescente. |
-| **Exp 3: MLP Profunda** | `[30, 16, 8, 1]` | ReLU / ReLU / Sigmoide | 0.01 | 0.80 | Duas camadas ocultas hierárquicas com aprendizado conservador. |
-| **Exp 4: Alta Capacidade** | `[30, 32, 16, 1]` | Tanh / Tanh / Sigmoide | 0.05 | 0.90 | Rede densa com ativações simétricas centradas em zero. |
+| Configuração | Épocas | Treino MSE | Treino MAE | Treino RMSE | Treino Acc (%) | Teste MSE | Teste Acc (%) |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Exp 1: [30-8-1] Sigmoid** | 356 | 0.026214 | 0.075047 | 0.161909 | 95.73% | 0.027708 | 97.67% |
+| **Exp 2: [30-16-1] ReLU + Sigmoid** | 439 | **0.014316** | **0.030065** | **0.119650** | **98.24%** | **0.013640** | **97.67%** |
+| **Exp 3: [30-16-8-1] Profunda (ReLU)** | 322 | 0.020814 | 0.041336 | 0.144269 | 97.24% | 0.021409 | 96.51% |
+| **Exp 4: [30-32-16-1] Alta Capacidade (Tanh)** | 302 | 0.197948 | 0.357497 | 0.444914 | 64.82% | 0.200962 | 63.95% |
 
-#### 5.1 Evolução e Convergência das Curvas de Erro
-As curvas de convergência para o Erro Quadrático Médio (MSE) e Erro Médio Absoluto (MAE) foram geradas e salvas durante o treinamento:
+#### 5.1 Análise dos Resultados
+- **Modelo Ótimo:** O **Exp 2** alcançou o menor erro de treinamento da bateria de testes ($\text{MSE} = 0.014316$ e $\text{MAE} = 0.030065$), com acurácia de treinamento de $98.24\%$ e acurácia de teste de $97.67\%$. A função ReLU evitou a saturação dos gradientes e a largura de 16 neurônios forneceu a dimensionalidade adequada para a separação dos hiperplanos.
+- **Topologia Profunda:** O **Exp 3** obteve boa convergência ($\text{MSE} = 0.020814$), demonstrando que o encadeamento de camadas ocultas mantém a estabilidade, mas para um problema tabular contínuo de 30 dimensões uma arquitetura de camada única alargada (Exp 2) foi mais eficaz.
+- **Comportamento com Tanh:** O **Exp 4** demonstrou lentidão de aprendizado e colapso parcial ($\text{Acc} \approx 64.8\%$), decorrente da incompatibilidade entre o pré-processamento Min-Max $[0, 1]$ e a ativação simétrica $[-1, 1]$, que satura precocemente na ausência de dados reescalonados centrados na origem.
+
+#### 5.2 Curvas de Convergência do Erro
+A evolução do MSE e do MAE ao longo das iterações é apresentada abaixo:
 
 ![Curvas de Convergência do Erro](notebooks/curvas_convergencia_erro.png)
 
@@ -274,17 +279,22 @@ pip install -r requirements.txt
 
 ### 5. Experimental Results and Architectural Comparison
 
-Four distinct topologies with varying activation functions and learning rates were evaluated to minimize training loss:
+Four experimental configurations were evaluated on the training and test partitions. The consolidated results are presented below:
 
-| Experiment | Architecture | Activations | $\eta$ | $\alpha$ | Hypothesis Objective |
-| :--- | :---: | :---: | :---: | :---: | :--- |
-| **Exp 1: Baseline** | `[30, 8, 1]` | Sigmoid / Sigmoid | 0.10 | 0.50 | Standard shallow network with logistic activations. |
-| **Exp 2: Wide ReLU** | `[30, 16, 1]` | ReLU / Sigmoid | 0.05 | 0.70 | Expanded hidden layer with ReLU to mitigate vanishing gradients. |
-| **Exp 3: Deep MLP** | `[30, 16, 8, 1]` | ReLU / ReLU / Sigmoid | 0.01 | 0.80 | Deep two-layer hierarchy trained with conservative steps. |
-| **Exp 4: High Capacity** | `[30, 32, 16, 1]` | Tanh / Tanh / Sigmoid | 0.05 | 0.90 | Dense topology with zero-centered activations. |
+| Configuration | Epochs | Train MSE | Train MAE | Train RMSE | Train Acc (%) | Test MSE | Test Acc (%) |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Exp 1: [30-8-1] Sigmoid** | 356 | 0.026214 | 0.075047 | 0.161909 | 95.73% | 0.027708 | 97.67% |
+| **Exp 2: [30-16-1] ReLU + Sigmoid** | 439 | **0.014316** | **0.030065** | **0.119650** | **98.24%** | **0.013640** | **97.67%** |
+| **Exp 3: [30-16-8-1] Deep (ReLU)** | 322 | 0.020814 | 0.041336 | 0.144269 | 97.24% | 0.021409 | 96.51% |
+| **Exp 4: [30-32-16-1] High Capacity (Tanh)** | 302 | 0.197948 | 0.357497 | 0.444914 | 64.82% | 0.200962 | 63.95% |
 
-#### 5.1 Error Convergence Curves
-Convergence histories for both Mean Squared Error (MSE) and Mean Absolute Error (MAE) were recorded across epochs:
+#### 5.1 Discussion
+- **Optimal Topology:** **Exp 2** yielded the minimum training error across all runs ($\text{MSE} = 0.014316$, $\text{MAE} = 0.030065$) while attaining $98.24\%$ train accuracy and $97.67\%$ test accuracy. ReLU non-linearities mitigated derivative vanishing, and 16 units provided sufficient capacity without overparameterization.
+- **Deep Architecture:** **Exp 3** demonstrated stable descent ($\text{MSE} = 0.020814$), verifying that additional hidden layers remain robust; however, the wider single-layer topology (Exp 2) proved slightly superior for this 30-feature tabular task.
+- **Tanh Saturation:** **Exp 4** stagnated ($\text{Acc} \approx 64.8\%$), reflecting the mathematical mismatch between $[0, 1]$ scaled inputs and zero-centered hyperbolic tangents, causing premature saturation when paired with high momentum.
+
+#### 5.2 Error Convergence Curves
+Convergence histories across training epochs are illustrated below:
 
 ![Error Convergence Curves](notebooks/curvas_convergencia_erro.png)
 
